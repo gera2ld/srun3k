@@ -10,8 +10,6 @@ SRun3K Stupid
 * 界面简洁
 * 不需要提升权限
 
-![SRun3K Stupid](http://i.minus.com/i75842O2GVcpX.png)
-
 ###下载
 * Windows版（依赖.Net Framework 3.5）：<http://geraldl.tk/srun3k>
 * Linux和MAC理论上可通过Mono运行，请自行研究。

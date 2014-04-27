@@ -32,7 +32,7 @@ namespace SRun3KStupid
 		void LinkLabel1LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			try {
-				System.Diagnostics.Process.Start("http://geraldl.tk/srun3k");
+				System.Diagnostics.Process.Start("http://geraldl.ml/Production/srun3k");
 			} catch {
 				
 			}

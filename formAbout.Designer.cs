@@ -52,7 +52,7 @@ namespace SRun3KStupid
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(246, 39);
 			this.label2.TabIndex = 1;
-			this.label2.Text = "Dedicate to my queen,\r\n  wish her happy and beautiful forever.";
+			this.label2.Text = "Dedicate to my dreamgirl,\r\n  wish her happy and beautiful forever.";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// tableLayoutPanel1

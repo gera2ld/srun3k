@@ -85,13 +85,13 @@ namespace SRun3KStupid
 		void _callback(string message,int window) {
 			if(srcore.isLoggedIn()) {
 				btLog.Text="&Log Out";
-				this.Icon=global::SRun3KStupid.Properties.SRun3K.internet1;
-				this.traySRun3K.Icon=global::SRun3KStupid.Properties.SRun3K.internet1;
+				this.Icon=Properties.SRun3K.internet1;
+				this.traySRun3K.Icon=Properties.SRun3K.internet1;
 			} else {
 				btLog.Text="&Log In";
 				enableItems(true);
-				this.Icon=global::SRun3KStupid.Properties.SRun3K.internet2;
-				this.traySRun3K.Icon=global::SRun3KStupid.Properties.SRun3K.internet2;
+				this.Icon=Properties.SRun3K.internet2;
+				this.traySRun3K.Icon=Properties.SRun3K.internet2;
 			}
 			btLog.Enabled=true;
 			sbMessage.Text=String.Format("{0} {1}",DateTime.Now.ToString("HH:mm"),message);

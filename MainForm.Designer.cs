@@ -49,12 +49,12 @@ namespace SRun3KStupid
 			this.btMAC = new System.Windows.Forms.Button();
 			this.label3 = new System.Windows.Forms.Label();
 			this.textMAC = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.textPwd = new System.Windows.Forms.TextBox();
-			this.textUsr = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.textHost = new System.Windows.Forms.TextBox();
+			this.textUsr = new System.Windows.Forms.TextBox();
+			this.textPwd = new System.Windows.Forms.TextBox();
 			this.traySRun3K = new System.Windows.Forms.NotifyIcon(this.components);
 			this.menuTray = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.menuShowHide = new System.Windows.Forms.ToolStripMenuItem();
@@ -221,33 +221,6 @@ namespace SRun3KStupid
 			this.textMAC.Size = new System.Drawing.Size(275, 21);
 			this.textMAC.TabIndex = 7;
 			// 
-			// label2
-			// 
-			this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(3, 34);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(59, 12);
-			this.label2.TabIndex = 2;
-			this.label2.Text = "&Password:";
-			// 
-			// textPwd
-			// 
-			this.textPwd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.textPwd.Location = new System.Drawing.Point(73, 30);
-			this.textPwd.Name = "textPwd";
-			this.textPwd.PasswordChar = '*';
-			this.textPwd.Size = new System.Drawing.Size(275, 21);
-			this.textPwd.TabIndex = 3;
-			// 
-			// textUsr
-			// 
-			this.textUsr.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.textUsr.Location = new System.Drawing.Point(73, 3);
-			this.textUsr.Name = "textUsr";
-			this.textUsr.Size = new System.Drawing.Size(275, 21);
-			this.textUsr.TabIndex = 1;
-			// 
 			// label1
 			// 
 			this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -257,6 +230,16 @@ namespace SRun3KStupid
 			this.label1.Size = new System.Drawing.Size(35, 12);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "&User:";
+			// 
+			// label2
+			// 
+			this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(3, 34);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(59, 12);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "&Password:";
 			// 
 			// label4
 			// 
@@ -275,6 +258,23 @@ namespace SRun3KStupid
 			this.textHost.Name = "textHost";
 			this.textHost.Size = new System.Drawing.Size(275, 21);
 			this.textHost.TabIndex = 5;
+			// 
+			// textUsr
+			// 
+			this.textUsr.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.textUsr.Location = new System.Drawing.Point(73, 3);
+			this.textUsr.Name = "textUsr";
+			this.textUsr.Size = new System.Drawing.Size(275, 21);
+			this.textUsr.TabIndex = 1;
+			// 
+			// textPwd
+			// 
+			this.textPwd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.textPwd.Location = new System.Drawing.Point(73, 30);
+			this.textPwd.Name = "textPwd";
+			this.textPwd.Size = new System.Drawing.Size(275, 21);
+			this.textPwd.TabIndex = 3;
+			this.textPwd.UseSystemPasswordChar = true;
 			// 
 			// traySRun3K
 			// 

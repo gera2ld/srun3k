@@ -90,6 +90,9 @@
     <EmbeddedResource Include="formAbout.resx">
       <DependentUpon>formAbout.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\SRun3K.resx">
       <LastGenOutput>SRun3K.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>

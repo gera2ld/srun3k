@@ -231,7 +231,7 @@ namespace SRun3KStupid
 			this.Icon = global::SRun3KStupid.Properties.SRun3K.internet2;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
-			this.Text = "SRun3K Stupid v1.0";
+			this.Text = "SRun3K Stupid v1.1";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainFormFormClosed);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);

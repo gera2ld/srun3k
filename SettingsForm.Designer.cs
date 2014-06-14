@@ -196,6 +196,7 @@ namespace SRun3KStupid
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = global::SRun3KStupid.Properties.SRun3K.internet1;
+			this.MaximizeBox = false;
 			this.Name = "SettingsForm";
 			this.Text = "Settings - SRun3K Stupid";
 			this.tableLayoutPanel1.ResumeLayout(false);

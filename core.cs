@@ -5,6 +5,7 @@
  * Time: 22:18
  */
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -15,18 +16,12 @@ using System.Threading;
 namespace SRun3KStupid
 {
 	/// <summary>
-	/// Core of client:
-	/// * SRun3K core: authenticator
+	/// Core
 	/// </summary>
-	public class core
+	public class SRun3KCore
 	{
-		public core(object parent) {
+		public SRun3KCore(object parent) {
 			this.parent=parent;
-		}
-		public core(object parent,string host)
-		{
-			this.parent=parent;
-			setServer(host);
 		}
 		public bool setServer(string host) {
 			try {
@@ -209,6 +204,73 @@ namespace SRun3KStupid
 				}
 				callback(g,0);
 			}
+		}
+	}
+	
+	public class Config {
+		public Config() {
+			filename=getFullPath("SRun3K.conf");
+			loadConf();
+		}
+		public string getConfString(string key,string def) {
+			if(data.ContainsKey(key)) return data[key];
+			else return def;
+		}
+		public string getConfString(string key) {
+			return getConfString(key,null);
+		}
+		public bool getConfBool(string key,bool def) {
+			if(data.ContainsKey(key)) return data[key]=="1";
+			else return def;
+		}
+		public bool getConfBool(string key) {
+			return getConfBool(key,false);
+		}
+		public void setConfString(string key,string val) {
+			data[key]=val;
+			changed=true;
+		}
+		public void setConfBool(string key,bool val) {
+			setConfString(key,val?"1":"0");
+		}
+		public void save() {
+			if(changed) dumpConf();
+		}
+		string filename;
+		Dictionary<string,string> data=new Dictionary<string, string>();
+		bool changed=false;
+		string getFullPath(string f) {
+			string a=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),f);
+			if(File.Exists(a)) return a;
+			if(File.Exists(f)) return f;
+			return a;	// Default %AppData%\{f} or ~/.config/{f}
+		}
+		void loadConf() {
+			StreamReader sr=new StreamReader(filename,Encoding.UTF8);
+			string s=sr.ReadToEnd();
+			sr.Close();
+			try {
+				s=Encoding.UTF8.GetString(Convert.FromBase64String(s));
+			} catch {
+				return;
+			}
+			string[] lines=s.Split('\n');
+			foreach (string line in lines) {
+				string[] args=line.Trim().Split(new char[]{'='},2);
+				if(args.Length==2) data[args[0]]=args[1];
+			}
+		}
+		void dumpConf() {
+			string[] buf=new String[data.Count];
+			int i=0;
+			foreach (KeyValuePair<string,string> kv in data) {
+				buf[i++]=string.Format("{0}={1}",kv.Key,kv.Value);
+			}
+			string d=string.Join("\n",buf);
+			byte[] bytes=Encoding.UTF8.GetBytes(d);
+			StreamWriter sw=new StreamWriter(filename,false,Encoding.UTF8);
+			sw.Write(Convert.ToBase64String(bytes));
+			sw.Close();
 		}
 	}
 }

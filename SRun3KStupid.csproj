@@ -68,9 +68,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="core.cs" />
-    <Compile Include="formAbout.cs" />
-    <Compile Include="formAbout.Designer.cs">
-      <DependentUpon>formAbout.cs</DependentUpon>
+    <Compile Include="SettingsForm.cs" />
+    <Compile Include="SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs" />
     <Compile Include="MainForm.Designer.cs">
@@ -87,8 +87,8 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="formAbout.resx">
-      <DependentUpon>formAbout.cs</DependentUpon>
+    <EmbeddedResource Include="SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

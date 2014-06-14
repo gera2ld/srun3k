@@ -5,85 +5,48 @@
  * Time: 20:53
  */
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Microsoft.Win32;
 
 namespace SRun3KStupid
 {
 	/// <summary>
-	/// Description of MainForm.
+	/// MainForm of SRun3K Stupid.
 	/// </summary>
 	public partial class MainForm : Form
 	{
 		public MainForm()
 		{
-			//
-			// The InitializeComponent() call is required for Windows Forms designer support.
-			//
 			InitializeComponent();
 			Directory.SetCurrentDirectory(Application.StartupPath);
+			core=new SRun3KCore(this);
+			conf=new Config();
 			btLog.Text="&Log In";
 			menuShowHide.Text="Hide &Window";
-			loadConf();
-			srcore=new core(this);
-			if(string.IsNullOrEmpty(textMAC.Text)) getMAC();
-			if(cbAutoLogIn.Checked) toggleLog();
-			appname=Application.ExecutablePath;
-			using(RegistryKey r=Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run")) {
-				if(r!=null) try {
-					if(r.GetValue(runkey).ToString()==appname) cbAutoStart.Checked=true;
-				}catch{
-				}
-			}
+			textUsr.Text=conf.getConfString("user");
+			textPwd.Text=conf.getConfString("pwd");
+			cbHidePwd.Checked=conf.getConfBool("hidepwd",true);
+			textPwd.UseSystemPasswordChar=cbHidePwd.Checked;
+			cbRemember.Checked=conf.getConfBool("rem",true);
+			getParams();
+			if(conf.getConfBool("autologin")) toggleLog();
 		}
 		const string runkey="SRun3kStupid";
-		ConfigParser cp=new ConfigParser();
-		core srcore;
-		string appname;
-		void loadConf() {
-			if(cp.initLoad()) try{
-				int key;
-				while((key=cp.loadKey())!=-1) {
-					switch ((char)key) {
-						case 'r':
-							cbRemember.Checked=cp.loadBool();
-							break;
-						case 'a':
-							cbAutoLogIn.Checked=cp.loadBool();
-							break;
-						case 'h':
-							textHost.Text=cp.loadString();
-							break;
-						case 'u':
-							textUsr.Text=cp.loadString();
-							break;
-						case 'p':
-							textPwd.Text=cp.loadString();
-							break;
-						case 'm':
-							textMAC.Text=cp.loadString();
-							break;
-					}
-				}
-			}catch{
-				
-			}finally{
-				cp.close();
-			}
+		Config conf;
+		SRun3KCore core;
+		string host,mac;
+		void getParams() {
+			host=conf.getConfString("host");
+			mac=conf.getConfString("mac");
 		}
 		void enableItems(bool enabled) {
 			textUsr.Enabled=enabled;
 			textPwd.Enabled=enabled;
-			textHost.Enabled=enabled;
-			textMAC.Enabled=enabled;
-			btMAC.Enabled=enabled;
+			cbHidePwd.Enabled=enabled;
+			btSettings.Enabled=enabled;
 		}
 		void _callback(string message,int window) {
-			if(srcore.isLoggedIn()) {
+			if(core.isLoggedIn()) {
 				btLog.Text="&Log Out";
 				this.Icon=Properties.SRun3K.internet1;
 				this.traySRun3K.Icon=Properties.SRun3K.internet1;
@@ -94,7 +57,7 @@ namespace SRun3KStupid
 				this.traySRun3K.Icon=Properties.SRun3K.internet2;
 			}
 			btLog.Enabled=true;
-			sbMessage.Text=String.Format("{0} {1}",DateTime.Now.ToString("HH:mm"),message);
+			labelMsg.Text=String.Format("{0} {1}",DateTime.Now.ToString("HH:mm"),message);
 			switch (window) {
 				case 1:
 					if(Visible) toggleWindow();
@@ -109,11 +72,15 @@ namespace SRun3KStupid
 		}
 		
 		void toggleLog() {
+			if(string.IsNullOrEmpty(host)||string.IsNullOrEmpty(mac)) {
+				labelMsg.Text="Please set host and MAC address first!";
+				return;
+			}
 			btLog.Enabled=false;
-			if(srcore.isLoggedIn()) srcore.logOut();
+			if(core.isLoggedIn()) core.logOut();
 			else {
 				enableItems(false);
-				srcore.logIn(textUsr.Text,textPwd.Text,textHost.Text,textMAC.Text);
+				core.logIn(textUsr.Text,textPwd.Text,host,mac);
 			}
 		}
 		
@@ -134,11 +101,6 @@ namespace SRun3KStupid
 			if(a.Button==MouseButtons.Left) toggleWindow();
 		}
 		
-		void BtMinimizeClick(object sender, EventArgs e)
-		{
-			Hide();
-		}
-		
 		void BtLogClick(object sender, EventArgs e)
 		{
 			toggleLog();
@@ -146,137 +108,43 @@ namespace SRun3KStupid
 		
 		void MainFormFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if(cp.initDump()) {
-				cp.dumpValue('r',cbRemember.Checked);
-				cp.dumpValue('a',cbAutoLogIn.Checked);
-				cp.dumpValue('h',textHost.Text);
-				if(cbRemember.Checked) {
-					cp.dumpValue('u',textUsr.Text);
-					cp.dumpValue('p',textPwd.Text);
-				}
-				cp.dumpValue('m',textMAC.Text);
-				cp.close();
+			if(cbRemember.Checked) {
+				conf.setConfString("user",textUsr.Text);
+				conf.setConfString("pwd",textPwd.Text);
+			} else {
+				conf.setConfString("user",null);
+				conf.setConfString("pwd",null);
 			}
+			conf.setConfBool("hidepwd",cbHidePwd.Checked);
+			conf.setConfBool("rem",cbRemember.Checked);
+			conf.save();
 		}
 		
-		void getMAC() {
-			ProcessStartInfo s=new ProcessStartInfo("ipconfig","/all");
-			s.UseShellExecute=false;
-			s.RedirectStandardInput=true;
-			s.RedirectStandardOutput=true;
-			s.RedirectStandardError=true;
-			s.CreateNoWindow=true;
-			Process p=Process.Start(s);
-			StreamReader sr=p.StandardOutput;
-			Regex re=new Regex(@"([\dA-F]{2}-){5}([\dA-F]{2})");
-			while(!sr.EndOfStream) {
-				string line=sr.ReadLine();
-				Match m=re.Match(line.Trim());
-				if(m.Length>0) {
-					textMAC.Text=m.Value;
-					return;
-				}
-			}
-			// MAC not found
-			Random r=new Random();
-			textMAC.Text=string.Format("{0:X2}-{1:X2}-{2:X2}-{3:X2}-{4:X2}-{5:X2}",
-			                           r.Next(256),r.Next(256),r.Next(256),
-			                           r.Next(256),r.Next(256),r.Next(256));
-		}
-		
-		void BtMACClick(object sender, EventArgs e)
+		void CbShowPwdCheckedChanged(object sender, EventArgs e)
 		{
-			getMAC();
+			textPwd.UseSystemPasswordChar=!cbHidePwd.Checked;
 		}
 		
-		void CbAutoStartClick(object sender, EventArgs e)
-		{
-			bool b=cbAutoStart.Checked;
-			using(RegistryKey r=Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run",true)) {
-				if(r!=null) try {
-					if(b) r.DeleteValue(runkey);
-					else r.SetValue(runkey,appname);
-					r.Close();
-					cbAutoStart.Checked=!b;
-				} catch {
-				}
-			}
-		}
-		
-		void AboutToolStripMenuItemClick(object sender, EventArgs e)
-		{
-			formAbout f=new formAbout();
-			f.ShowDialog();
-		}
-		
-		void ExitToolStripMenuItemClick(object sender, EventArgs e)
+		void MenuExitClick(object sender, EventArgs e)
 		{
 			Close();
 		}
 		
-		void ShowHideWindowToolStripMenuItemClick(object sender, EventArgs e)
+		void MenuShowHideClick(object sender, EventArgs e)
 		{
 			toggleWindow();
 		}
-	}
-	
-	class ConfigParser {
-		public ConfigParser() {
-			filename=getFullPath("SRun3K.conf");
+		
+		void BtSettingsClick(object sender, EventArgs e)
+		{
+			SettingsForm f=new SettingsForm(conf);
+			f.StartPosition=FormStartPosition.CenterParent;
+			if(f.ShowDialog()==DialogResult.OK) getParams();
 		}
-		public string getFullPath(string f) {
-			string a=Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)+"\\"+f;
-			if(File.Exists(a)) return a;
-			if(File.Exists(f)) return f;
-			return a;	// Default %AppData%\{f}
-		}
-		string filename;
-		FileStream fs=null;
-		public void close() {
-			fs.Close();
-		}
-		bool init(FileMode fm) {
-			try{
-				fs=new FileStream(filename,fm);
-			}catch{
-				return false;
-			}
-			return true;
-		}
-		byte getByte(int i) {
-			byte k=22;
-			return (byte)((i^k)&255);
-		}
-		public bool initLoad() {
-			return init(FileMode.Open);
-		}
-		public int loadKey() {
-			int k=fs.ReadByte();
-			return k>=0?getByte(k):k;
-		}
-		public bool loadBool() {
-			return getByte(fs.ReadByte())>0;
-		}
-		public string loadString() {
-			int l=getByte(fs.ReadByte());
-			byte[] b=new byte[l];
-			fs.Read(b,0,l);
-			for(int i=0;i<l;i++) b[i]=getByte(b[i]);
-			return Encoding.UTF8.GetString(b);
-		}
-		public bool initDump() {
-			return init(FileMode.Create);
-		}
-		public void dumpValue(char key,bool b) {
-			fs.WriteByte(getByte((int)key));
-			fs.WriteByte(getByte(b?1:0));
-		}
-		public void dumpValue(char key,string v) {
-			byte[] b=Encoding.UTF8.GetBytes(v);
-			fs.WriteByte(getByte(key));
-			fs.WriteByte(getByte(b.Length));
-			for(int i=0;i<b.Length;i++) b[i]=getByte(b[i]);
-			fs.Write(b,0,b.Length);
+		
+		void CbHidePwdCheckedChanged(object sender, EventArgs e)
+		{
+			textPwd.UseSystemPasswordChar=cbHidePwd.Checked;
 		}
 	}
 }

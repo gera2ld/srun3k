@@ -19,39 +19,39 @@ namespace SRun3KStupid
 		{
 			InitializeComponent();
 			this.conf=conf;
+			getMACs();
 			textHost.Text=conf.getConfString("host");
-			textMAC.Text=conf.getConfString("mac");
+			comboMAC.Text=conf.getConfString("mac");
 			cbAutoLogIn.Checked=conf.getConfBool("autologin");
 		}
 		Config conf;
-		string getMAC() {
+		void getMACs() {
             IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
             NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
             if(nics!=null) foreach(NetworkInterface adapter in nics) {
                 PhysicalAddress address=adapter.GetPhysicalAddress();
                 byte[] bytes=address.GetAddressBytes();
                 string[] buf=new string[bytes.Length];
-                for(int i=0;i<bytes.Length;i++) buf[i]=bytes[i].ToString("X2");
+                for(int j=0;j<bytes.Length;j++) buf[j]=bytes[j].ToString("X2");
                 string mac=string.Join("-",buf);
-                return mac;
+                if(!string.IsNullOrEmpty(mac)) comboMAC.Items.Add(mac);
             }
-			Random r=new Random();
-			return string.Format("{0:X2}-{1:X2}-{2:X2}-{3:X2}-{4:X2}-{5:X2}",
-			                           r.Next(256),r.Next(256),r.Next(256),
-			                           r.Next(256),r.Next(256),r.Next(256));
 		}
 		
 		void BtOKClick(object sender, EventArgs e)
 		{
 			conf.setConfString("host",textHost.Text);
-			conf.setConfString("mac",textMAC.Text);
+			conf.setConfString("mac",comboMAC.Text);
 			conf.setConfBool("autologin",cbAutoLogIn.Checked);
 			Close();
 		}
 		
 		void BtMACClick(object sender, EventArgs e)
 		{
-			textMAC.Text=getMAC();
+			Random r=new Random();
+			comboMAC.Text=string.Format("{0:X2}-{1:X2}-{2:X2}-{3:X2}-{4:X2}-{5:X2}",
+		                           r.Next(256),r.Next(256),r.Next(256),
+		                           r.Next(256),r.Next(256),r.Next(256));
 		}
 		
 		void LinkSupportLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

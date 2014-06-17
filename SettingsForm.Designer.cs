@@ -38,11 +38,11 @@ namespace SRun3KStupid
 		{
 			this.btMAC = new System.Windows.Forms.Button();
 			this.label3 = new System.Windows.Forms.Label();
-			this.textMAC = new System.Windows.Forms.TextBox();
 			this.textHost = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.cbAutoLogIn = new System.Windows.Forms.CheckBox();
+			this.comboMAC = new System.Windows.Forms.ComboBox();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.btCancel = new System.Windows.Forms.Button();
 			this.btOK = new System.Windows.Forms.Button();
@@ -61,7 +61,7 @@ namespace SRun3KStupid
 			this.btMAC.Name = "btMAC";
 			this.btMAC.Size = new System.Drawing.Size(51, 22);
 			this.btMAC.TabIndex = 15;
-			this.btMAC.Text = "&Update";
+			this.btMAC.Text = "&Random";
 			this.btMAC.UseVisualStyleBackColor = true;
 			this.btMAC.Click += new System.EventHandler(this.BtMACClick);
 			// 
@@ -74,14 +74,6 @@ namespace SRun3KStupid
 			this.label3.Size = new System.Drawing.Size(29, 12);
 			this.label3.TabIndex = 13;
 			this.label3.Text = "&MAC:";
-			// 
-			// textMAC
-			// 
-			this.textMAC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.textMAC.Location = new System.Drawing.Point(44, 30);
-			this.textMAC.Name = "textMAC";
-			this.textMAC.Size = new System.Drawing.Size(190, 21);
-			this.textMAC.TabIndex = 14;
 			// 
 			// textHost
 			// 
@@ -113,7 +105,7 @@ namespace SRun3KStupid
 			this.tableLayoutPanel1.Controls.Add(this.textHost, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.btMAC, 2, 1);
 			this.tableLayoutPanel1.Controls.Add(this.label3, 0, 1);
-			this.tableLayoutPanel1.Controls.Add(this.textMAC, 1, 1);
+			this.tableLayoutPanel1.Controls.Add(this.comboMAC, 1, 1);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -137,6 +129,15 @@ namespace SRun3KStupid
 			this.cbAutoLogIn.TabIndex = 17;
 			this.cbAutoLogIn.Text = "Log in at start &up";
 			this.cbAutoLogIn.UseVisualStyleBackColor = true;
+			// 
+			// comboMAC
+			// 
+			this.comboMAC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.comboMAC.FormattingEnabled = true;
+			this.comboMAC.Location = new System.Drawing.Point(44, 31);
+			this.comboMAC.Name = "comboMAC";
+			this.comboMAC.Size = new System.Drawing.Size(190, 20);
+			this.comboMAC.TabIndex = 18;
 			// 
 			// flowLayoutPanel1
 			// 
@@ -205,6 +206,7 @@ namespace SRun3KStupid
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ComboBox comboMAC;
 		private System.Windows.Forms.LinkLabel linkSupport;
 		private System.Windows.Forms.Button btCancel;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
@@ -213,7 +215,6 @@ namespace SRun3KStupid
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox textHost;
-		private System.Windows.Forms.TextBox textMAC;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Button btMAC;
 	}

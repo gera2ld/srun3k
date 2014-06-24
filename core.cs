@@ -256,10 +256,10 @@ namespace SRun3KStupid
 		Dictionary<string,string> data=new Dictionary<string, string>();
 		bool changed=false;
 		string getFullPath(string f) {
-			string a=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),f);
-			if(File.Exists(a)) return a;
 			if(File.Exists(f)) return f;
-			return a;	// Default %AppData%\{f} or ~/.config/{f}
+			string a=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),f);
+			if(File.Exists(a)) return a; // %AppData%\{f} or ~/.config/{f}
+			return Path.Combine(System.Windows.Forms.Application.StartupPath,f);
 		}
 		void loadConf() {
 			StreamReader sr=new StreamReader(filename,Encoding.UTF8);

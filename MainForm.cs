@@ -5,7 +5,6 @@
  * Time: 20:53
  */
 using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace SRun3KStupid
@@ -18,7 +17,6 @@ namespace SRun3KStupid
 		public MainForm()
 		{
 			InitializeComponent();
-			Directory.SetCurrentDirectory(Application.StartupPath);
 			core=new SRun3KCore(this);
 			conf=new Config();
 			btLog.Text="&Log In";

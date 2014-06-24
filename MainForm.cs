@@ -28,16 +28,16 @@ namespace SRun3KStupid
 			cbHidePwd.Checked=conf.getConfBool("hidepwd",true);
 			textPwd.UseSystemPasswordChar=cbHidePwd.Checked;
 			cbRemember.Checked=conf.getConfBool("rem",true);
-			getParams();
+			conf.getConfBool("autohide",true);
+			initCore();
 			if(conf.getConfBool("autologin")) toggleLog();
 		}
 		const string runkey="SRun3kStupid";
 		Config conf;
 		SRun3KCore core;
-		string host,mac;
-		void getParams() {
-			host=conf.getConfString("host");
-			mac=conf.getConfString("mac");
+		void initCore() {
+			core.setServer(conf.getConfString("host"));
+			core.setMAC(conf.getConfString("mac"));
 		}
 		void enableItems(bool enabled) {
 			textUsr.Enabled=enabled;
@@ -58,29 +58,19 @@ namespace SRun3KStupid
 			}
 			btLog.Enabled=true;
 			labelMsg.Text=String.Format("{0} {1}",DateTime.Now.ToString("HH:mm"),message);
-			switch (window) {
-				case 1:
-					if(Visible) toggleWindow();
-					break;
-				case 2:
-					if(!Visible) toggleWindow();
-					break;
-			}
+			if(!conf.getConfBool("autohide")&&window==1) window=0;
+			if(window==1&&Visible||window==2&&!Visible) toggleWindow();
 		}
 		public void callback(string message,int window) {
 			Invoke(new Action<string,int>(_callback),new object[]{message,window});
 		}
 		
 		void toggleLog() {
-			if(string.IsNullOrEmpty(host)||string.IsNullOrEmpty(mac)) {
-				labelMsg.Text="Please set host and MAC address first!";
-				return;
-			}
 			btLog.Enabled=false;
 			if(core.isLoggedIn()) core.logOut();
 			else {
 				enableItems(false);
-				core.logIn(textUsr.Text,textPwd.Text,host,mac);
+				core.logIn(textUsr.Text,textPwd.Text);
 			}
 		}
 		
@@ -139,7 +129,8 @@ namespace SRun3KStupid
 		{
 			SettingsForm f=new SettingsForm(conf);
 			f.StartPosition=FormStartPosition.CenterParent;
-			if(f.ShowDialog()==DialogResult.OK) getParams();
+			if(f.ShowDialog()==DialogResult.OK)
+				initCore();
 		}
 		
 		void CbHidePwdCheckedChanged(object sender, EventArgs e)

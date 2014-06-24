@@ -27,21 +27,31 @@ namespace SRun3KStupid
 			try {
 				iphost=IPAddress.Parse(host);
 			} catch {
+				this.host=null;
 				return false;
 			}
 			this.host=host;
 			server=new IPEndPoint(iphost,port);
 			return true;
 		}
+		public bool setServer(string host,int port) {
+			this.port=port;
+			return setServer(host);
+		}
+		public void setMAC(string mac) {
+			this.mac=mac;
+		}
 		public bool isLoggedIn() {
 			return uid>0;
 		}
-		public void logIn(string usr,string pwd,string host,string mac) {
-			if(setServer(host)) {
+		public void logIn(string usr,string pwd) {
+			if(string.IsNullOrEmpty(host)) callback("Please set host first.",0);
+			else if(string.IsNullOrEmpty(mac)) callback("Please set MAC address first.",0);
+			else {
 				Thread t=new Thread(new ParameterizedThreadStart(_logIn));
 				t.IsBackground=true;
-				t.Start(new string[]{usr,pwd,mac});
-			} else callback("Invalid host name.",0);
+				t.Start(new string[]{usr,pwd});
+			}
 		}
 		public void logOut() {
 			Thread t=new Thread(new ThreadStart(_logOut));
@@ -51,17 +61,13 @@ namespace SRun3KStupid
 		
 		const string sr_ua="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1 SRun3K Client_W115S0B20131021A-SRun3K";
 		DateTime basetime=new DateTime(1970,1,1);
-		string host=null;
+		string host=null,mac=null;
 		int port=3335;
 		IPAddress iphost;
 		IPEndPoint server;
 		long now,diff=0,uid=0;
 		bool keeping=false;
 		object parent;
-		bool setServer(string host,int port) {
-			this.port=port;
-			return setServer(host);
-		}
 		Stream post(string url,byte[] data) {
 			HttpWebRequest req=(HttpWebRequest)WebRequest.Create(url);
 			req.UserAgent=sr_ua;
@@ -103,7 +109,7 @@ namespace SRun3KStupid
 			}
 			return Encoding.UTF8.GetString(penc);
 		}
-		string logInOnce(string usr,string pwd,string mac){
+		string logInOnce(string usr,string pwd){
 			now=(DateTime.UtcNow.Ticks-basetime.Ticks)/10000000;
 			long t=now-diff;
 			string g,key=(t/60).ToString();
@@ -141,16 +147,16 @@ namespace SRun3KStupid
 		}
 		void _logIn(object op) {
 			string[] p=(string[])op;
-			string usr=p[0],pwd=p[1],mac=p[2];
+			string usr=p[0],pwd=p[1];
 			// Try logging in
-			string g=logInOnce(usr,pwd,mac);
+			string g=logInOnce(usr,pwd);
 			string[] r=g.Split('@');
 			int t;
 			if(r.Length==2) {
 				int.TryParse(r[1],out t);
 				if(t>0) {
 					diff=now-t;
-					g=logInOnce(usr,pwd,mac);
+					g=logInOnce(usr,pwd);
 					r=g.Split('@');
 				}
 			}
@@ -210,18 +216,28 @@ namespace SRun3KStupid
 	public class Config {
 		public Config() {
 			filename=getFullPath("SRun3K.conf");
-			loadConf();
+			try {
+				loadConf();
+			} catch {
+				
+			}
 		}
 		public string getConfString(string key,string def) {
 			if(data.ContainsKey(key)) return data[key];
-			else return def;
+			else {
+				if(def!=null) setConfString(key,def);
+				return def;
+			}
 		}
 		public string getConfString(string key) {
 			return getConfString(key,null);
 		}
 		public bool getConfBool(string key,bool def) {
 			if(data.ContainsKey(key)) return data[key]=="1";
-			else return def;
+			else {
+				if(def) setConfBool(key,def);
+				return def;
+			}
 		}
 		public bool getConfBool(string key) {
 			return getConfBool(key,false);

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace SRun3KStupid
 {
 	/// <summary>
-	/// Description of SettingsForm.
+	/// SettingsForm.
 	/// </summary>
 	public partial class SettingsForm : Form
 	{
@@ -22,6 +22,7 @@ namespace SRun3KStupid
 			getMACs();
 			textHost.Text=conf.getConfString("host");
 			comboMAC.Text=conf.getConfString("mac");
+			cbAutoHide.Checked=conf.getConfBool("autohide");
 			cbAutoLogIn.Checked=conf.getConfBool("autologin");
 		}
 		Config conf;
@@ -42,6 +43,7 @@ namespace SRun3KStupid
 		{
 			conf.setConfString("host",textHost.Text);
 			conf.setConfString("mac",comboMAC.Text);
+			conf.setConfBool("autohide",cbAutoHide.Checked);
 			conf.setConfBool("autologin",cbAutoLogIn.Checked);
 			Close();
 		}

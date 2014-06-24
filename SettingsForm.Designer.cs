@@ -43,6 +43,7 @@ namespace SRun3KStupid
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.cbAutoLogIn = new System.Windows.Forms.CheckBox();
 			this.comboMAC = new System.Windows.Forms.ComboBox();
+			this.cbAutoHide = new System.Windows.Forms.CheckBox();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.btCancel = new System.Windows.Forms.Button();
 			this.btOK = new System.Windows.Forms.Button();
@@ -100,32 +101,31 @@ namespace SRun3KStupid
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-			this.tableLayoutPanel1.Controls.Add(this.cbAutoLogIn, 0, 2);
+			this.tableLayoutPanel1.Controls.Add(this.cbAutoLogIn, 0, 3);
 			this.tableLayoutPanel1.Controls.Add(this.label4, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.textHost, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.btMAC, 2, 1);
 			this.tableLayoutPanel1.Controls.Add(this.label3, 0, 1);
 			this.tableLayoutPanel1.Controls.Add(this.comboMAC, 1, 1);
+			this.tableLayoutPanel1.Controls.Add(this.cbAutoHide, 0, 2);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 3;
+			this.tableLayoutPanel1.RowCount = 4;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(294, 77);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(294, 99);
 			this.tableLayoutPanel1.TabIndex = 16;
 			// 
 			// cbAutoLogIn
 			// 
-			this.cbAutoLogIn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbAutoLogIn.AutoSize = true;
 			this.tableLayoutPanel1.SetColumnSpan(this.cbAutoLogIn, 3);
-			this.cbAutoLogIn.Location = new System.Drawing.Point(3, 58);
+			this.cbAutoLogIn.Location = new System.Drawing.Point(3, 80);
 			this.cbAutoLogIn.Name = "cbAutoLogIn";
-			this.cbAutoLogIn.Size = new System.Drawing.Size(288, 16);
+			this.cbAutoLogIn.Size = new System.Drawing.Size(132, 16);
 			this.cbAutoLogIn.TabIndex = 17;
 			this.cbAutoLogIn.Text = "Log in at start &up";
 			this.cbAutoLogIn.UseVisualStyleBackColor = true;
@@ -138,6 +138,17 @@ namespace SRun3KStupid
 			this.comboMAC.Name = "comboMAC";
 			this.comboMAC.Size = new System.Drawing.Size(190, 20);
 			this.comboMAC.TabIndex = 18;
+			// 
+			// cbAutoHide
+			// 
+			this.cbAutoHide.AutoSize = true;
+			this.tableLayoutPanel1.SetColumnSpan(this.cbAutoHide, 3);
+			this.cbAutoHide.Location = new System.Drawing.Point(3, 58);
+			this.cbAutoHide.Name = "cbAutoHide";
+			this.cbAutoHide.Size = new System.Drawing.Size(186, 16);
+			this.cbAutoHide.TabIndex = 19;
+			this.cbAutoHide.Text = "Hide &window after logged in";
+			this.cbAutoHide.UseVisualStyleBackColor = true;
 			// 
 			// flowLayoutPanel1
 			// 
@@ -164,6 +175,7 @@ namespace SRun3KStupid
 			// 
 			// btOK
 			// 
+			this.btOK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.btOK.Location = new System.Drawing.Point(135, 3);
 			this.btOK.Name = "btOK";
 			this.btOK.Size = new System.Drawing.Size(75, 23);
@@ -176,9 +188,9 @@ namespace SRun3KStupid
 			// 
 			this.linkSupport.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.linkSupport.LinkArea = new System.Windows.Forms.LinkArea(0, 18);
-			this.linkSupport.Location = new System.Drawing.Point(0, 77);
+			this.linkSupport.Location = new System.Drawing.Point(0, 99);
 			this.linkSupport.Name = "linkSupport";
-			this.linkSupport.Size = new System.Drawing.Size(294, 66);
+			this.linkSupport.Size = new System.Drawing.Size(294, 44);
 			this.linkSupport.TabIndex = 19;
 			this.linkSupport.TabStop = true;
 			this.linkSupport.Text = "Visit support page";
@@ -206,6 +218,7 @@ namespace SRun3KStupid
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.CheckBox cbAutoHide;
 		private System.Windows.Forms.ComboBox comboMAC;
 		private System.Windows.Forms.LinkLabel linkSupport;
 		private System.Windows.Forms.Button btCancel;

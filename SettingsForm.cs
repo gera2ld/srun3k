@@ -21,7 +21,6 @@ namespace SRun3KStupid
 		{
 			InitializeComponent();
 			this.conf=conf;
-			getMACs();
 			textHost.Text=conf.getConfString("host");
 			comboMAC.Text=conf.getConfString("mac");
 			cbAutoHide.Checked=conf.getConfBool("autohide");
@@ -67,31 +66,40 @@ namespace SRun3KStupid
 			}
 		}
 		
-		void _callback(int code,string data) {
+		void _callback(int code,string msg,string data) {
 			switch(code) {
-				case 0:
-					lblMsg.Text=data;
-					break;
 				case 1:
-					lblMsg.Text="Host is guessed!";
-					textHost.Text=data;
+					if(data!=null) textHost.Text=data;
+					btGuess.Enabled=true;
 					break;
 			}
-			btGuess.Enabled=true;
+			lblMsg.Text=msg;
 		}
-		void callback(int code,string data) {
-			Invoke(new Action<int,string>(_callback),new object[]{code,data});
+		void callback(int code,string msg,string data) {
+			try {
+				Invoke(new Action<int,string,string>(_callback),new object[]{code,msg,data});
+			} catch {
+				
+			}
 		}
 		
 		void guess() {
+			callback(0,"Trying to guess a host...",null);
 			HttpWebRequest req=(HttpWebRequest)WebRequest.Create("http://www.baidu.com/");
 			req.Method="GET";
 			req.Proxy=null;
-			HttpWebResponse res=(HttpWebResponse)req.GetResponse();
+			req.Timeout=1000;
+			HttpWebResponse res;
+			try {
+				res=(HttpWebResponse)req.GetResponse();
+			} catch {
+				callback(1,"Guess failed: Network error.",null);
+				return;
+			}
 			if(res.ResponseUri.Host=="www.baidu.com") {
-				callback(0,"Guess failed: Internet is already connected.");
+				callback(1,"Guess failed: Internet is already connected.",null);
 			} else {
-				callback(1,res.ResponseUri.Host);
+				callback(1,"Guess succeeded: Host is guessed!",res.ResponseUri.Host);
 			}
 		}
 		
@@ -101,6 +109,11 @@ namespace SRun3KStupid
 			Thread t=new Thread(new ThreadStart(guess));
 			t.IsBackground=true;
 			t.Start();
+		}
+		
+		void SettingsFormLoad(object sender, EventArgs e)
+		{
+			getMACs();
 		}
 	}
 }

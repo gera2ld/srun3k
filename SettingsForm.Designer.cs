@@ -235,6 +235,7 @@ namespace SRun3KStupid
 			this.MaximizeBox = false;
 			this.Name = "SettingsForm";
 			this.Text = "Settings - SRun3K Stupid";
+			this.Load += new System.EventHandler(this.SettingsFormLoad);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
 			this.flowLayoutPanel1.ResumeLayout(false);

@@ -66,7 +66,9 @@ namespace SRun3KStupid
 			}
 		}
 		
-		void _callback(int code,string msg,string data) {
+		void _callback(object[] o) {
+			int code=(int)o[0];
+			string msg=(string)o[1],data=(string)o[2];
 			switch(code) {
 				case 1:
 					if(data!=null) textHost.Text=data;
@@ -77,7 +79,7 @@ namespace SRun3KStupid
 		}
 		void callback(int code,string msg,string data) {
 			try {
-				Invoke(new Action<int,string,string>(_callback),new object[]{code,msg,data});
+				Invoke(new Action<object[]>(_callback),new object[]{new object[]{code,msg,data}});
 			} catch {
 				
 			}

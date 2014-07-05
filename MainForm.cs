@@ -43,7 +43,9 @@ namespace SRun3KStupid
 			cbHidePwd.Enabled=enabled;
 			btSettings.Enabled=enabled;
 		}
-		void _callback(string message,int window) {
+		void _callback(object[] o) {
+			string message=(string)o[0];
+			int window=(int)o[1];
 			if(core.isLoggedIn()) {
 				btLog.Text="&Log Out";
 				this.Icon=Properties.SRun3K.internet1;
@@ -60,7 +62,7 @@ namespace SRun3KStupid
 			if(window==1&&Visible||window==2&&!Visible) toggleWindow();
 		}
 		public void callback(string message,int window) {
-			Invoke(new Action<string,int>(_callback),new object[]{message,window});
+			Invoke(new Action<object[]>(_callback),new object[]{new object[]{message,window}});
 		}
 		
 		void toggleLog() {

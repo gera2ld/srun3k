@@ -11,5 +11,5 @@ SRun3K Stupid
 * 不需要提升权限
 
 ###下载
-* Windows版（依赖.Net Framework 3.5）：<http://geraldl.ml/proj/srun3k>
-* Linux和MAC理论上可通过Mono运行，请自行研究。
+* Windows版（依赖.Net Framework 3.5）：<http://geraldl.net/proj/srun3k>
+* Linux和MAC理论上可通过Mono运行，未测试。
